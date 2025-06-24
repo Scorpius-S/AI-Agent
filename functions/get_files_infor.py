@@ -1,4 +1,4 @@
-import os
+import os #Importing os module to interact with the operating system
 
 def get_files_info(working_directory, directory=None):
     if directory is None:
