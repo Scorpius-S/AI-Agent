@@ -8,9 +8,18 @@ def get_file_content(working_directory, file_path):
     if not os.path.isfile(abs_file_path):
         return f'Error: File not found or is not a regular file: {file_path}'
     
-    MAX_CHARS = 10000
-    with open(abs_file_path, 'r') as f:
-        file_content_string = f.read(MAX_CHARS)
-        remaning_chars = f.read(1)
-    if len(file_content_string) >= MAX_CHARS:
-        return f"... file {file_path} File content truncated to {MAX_CHARS} characters]"
+def read_with_truncation(file_path, max_chars=10000):
+    abs_path = os.path.abspath(file_path)
+    content = ""
+    try:
+        with open(abs_path, 'r', encoding='utf-8', errors='replace') as f:
+            content = f.read(max_chars)
+            overflow = f.read(1)
+            if overflow:
+                content += (
+                    f"\n\n"
+                    f"[...File \"{file_path}\" truncated at {max_chars} characters]"
+                )
+        return content
+    except IOError as e:
+        return f"Error: Failed to read file \"{file_path}\": {e}"
