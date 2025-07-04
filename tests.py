@@ -1,9 +1,7 @@
-from functions.file_reader import get_file_content, read_with_truncation
+from functions.file_write import write_file
 
-print(get_file_content("calculator", "lorem.txt"))
-print(get_file_content("calculator", "main.py"))
-print(get_file_content("calculator", "pkg/calculator.py"))
-print(get_file_content("calculator", "/bin/cat"))
-
+print(write_file("calculator", "lorem.txt", "wait, this isn't lorem ipsum"))
+print(write_file("calculator", "pkg/morelorem.txt", "lorem ipsum dolor sit amet"))
+print(write_file("calculator", "/tmp/temp.txt", "this should not be allowed"))
 
 
