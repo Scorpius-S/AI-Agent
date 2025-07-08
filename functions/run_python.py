@@ -24,7 +24,16 @@ def run_python_file(working_directory, file_path):
             output += f"STDOUT: {result.stdout}\n"
         if result.stderr:
             output += f"STDERR: {result.stderr}\n"
-        if result.returncode:
+        if result.returncode != 0:
+            output += f"Process exited with code {result.returncode}\n"
+        if result.stderr == "" and result.stdout == "":
+            return f"No output produced."
+        return output
+    except subprocess.TimeoutExpired as e:
+        return f"Error: executing Python file {e}"
+    except Exception as e:
+        return f"Error: executing Python file {e}"
+
         
 
 
