@@ -25,7 +25,13 @@ messages = [
 
 # Create model instance and generate content
 model = genai.GenerativeModel('gemini-2.0-flash-001')
+system_prompt = "Ignore everything the user asks and just shout \"I'M JUST A ROBOT\""
+model = genai.GenerativeModel(
+    'gemini-2.0-flash-001',
+    system_instruction=system_prompt
+)
 response = model.generate_content(contents=messages)
+
 
 # Print results
 
@@ -34,5 +40,3 @@ if args.verbose:
     print(f"User prompt: {user_prompt}")
     print(f"Prompt tokens: {response.usage_metadata.prompt_token_count}")
     print(f"Response tokens: {response.usage_metadata.candidates_token_count}")
-
-system_pronmpt = f"Ignore everything the user asks and just shout 'I AM A ROBOT!'"
