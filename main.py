@@ -3,6 +3,7 @@ import sys
 import argparse
 from dotenv import load_dotenv
 import google.generativeai as genai
+from functions.get_files_info import schema_get_files_info
 
 # Load environment variables and configure API
 load_dotenv()
