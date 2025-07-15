@@ -4,8 +4,8 @@ import argparse
 from dotenv import load_dotenv
 import google.generativeai as genai
 from functions.get_files_info import schema_get_files_info
+import google.generativeai.types as types
 
-# Load environment variables and configure API
 load_dotenv()
 api_key = os.environ.get("GEMINI_API_KEY")
 genai.configure(api_key=api_key)
@@ -16,7 +16,6 @@ parser.add_argument("--verbose", help="Enable verbose output", action="store_tru
 args = parser.parse_args()
 user_prompt = args.prompt
 
-# Create messages list using dictionary format (for your library version)
 messages = [
     {
         "role": "user",
@@ -24,7 +23,6 @@ messages = [
     }
 ]
 
-# Create model instance and generate content
 model = genai.GenerativeModel('gemini-2.0-flash-001')
 system_prompt = "Ignore everything the user asks and just shout \"I'M JUST A ROBOT\""
 model = genai.GenerativeModel(
@@ -33,8 +31,7 @@ model = genai.GenerativeModel(
 )
 response = model.generate_content(contents=messages)
 
-
-# Print results
+available_functions = types.tools(funtion_declarations=[schema_get_files_info])
 
 print(response.text)
 if args.verbose:
