@@ -23,17 +23,31 @@ messages = [
     }
 ]
 
-model = genai.GenerativeModel('gemini-2.0-flash-001')
-system_prompt = "Ignore everything the user asks and just shout \"I'M JUST A ROBOT\""
+
+system_prompt = """
+You are a helpful AI coding agent.
+
+When a user asks a question or makes a request, make a function call plan. You can perform the following operations:
+
+- List files and directories
+
+All paths you provide should be relative to the working directory. You do not need to specify the working directory in your function calls as it is automatically injected for security reasons.
+"""
+
 model = genai.GenerativeModel(
     'gemini-2.0-flash-001',
     system_instruction=system_prompt
 )
-response = model.generate_content(contents=messages)
 
-available_functions = types.tools(funtion_declarations=[schema_get_files_info])
+available_functions = types.Tool(function_declarations=[schema_get_files_info])
+config=types.GenerateContentConfig(
+    tools=[available_functions], system_instruction=system_prompt)
+response = model.generate_content(contents=messages,generation_config=config)
 
-print(response.text)
+if function_call_part := response.function_calls:
+    print(f"Calling function: {function_call_part.name}({function_call_part.args})")
+else:
+    print(response.text)
 if args.verbose:
     print(f"User prompt: {user_prompt}")
     print(f"Prompt tokens: {response.usage_metadata.prompt_token_count}")
