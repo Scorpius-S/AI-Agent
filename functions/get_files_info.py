@@ -1,5 +1,7 @@
-import os 
-import google.generativeai.types as types
+import os
+from google import genai
+from google.genai import types
+
 
 def get_files_info(working_directory, directory=None):
     if directory is None:
@@ -38,7 +40,7 @@ schema_get_files_info = types.FunctionDeclaration(
     name="get_files_info",
     description="Lists files in the specified directory along with their sizes, constrained to the working directory.",
     parameters=types.Schema(
-        type=types.type.OBJECT, 
+        type=types.OBJECT, 
         properties={
             "directory": types.Schema(
                 type=types.type.STRING,
